@@ -11,9 +11,11 @@ for board_position in range(1, len(lines), 6):
 # board_listing = "\n\n".join([str(b) for b in boards])
 # print(f"{board_listing}")
 
+moves = list(reversed(moves))
 completed_boards = []
 last_board = None
-for move in moves:
+while not last_board and moves:
+    move = moves.pop()
     print(f"calling {move}")
     for board in boards:
         board.mark(move)
@@ -22,13 +24,14 @@ for move in moves:
                 completed_boards.append(board)
                 if len(completed_boards) == len(boards):
                     last_board = board
-    if last_board:
-        break
 
-print(f"{move} {last_board}")
-print(
-    f"{move} * {last_board.get_unmarked_sum()} = {move * last_board.get_unmarked_sum()}"
-)
+if not last_board:
+    raise ValueError("Ran out of moves before finding all boards complete")
+else:
+    print(f"{move} {last_board}")
+    print(
+        f"{move} * {last_board.get_unmarked_sum()} = {move * last_board.get_unmarked_sum()}"
+    )
 
 
 # for move in moves:

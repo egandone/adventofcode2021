@@ -1,24 +1,18 @@
+import itertools
+
+
 class BingoCell:
     def __init__(self, v):
-        self._v = int(v)
-        self._marked = False
-
-    def value(self):
-        return self._v
-
-    def mark(self):
-        self._marked = True
-
-    def marked(self):
-        return self._marked
+        self.v = int(v)
+        self.marked = False
 
     def __str__(self):
-        if self._marked:
-            return f"{self._v:>2}(*)"
+        if self.marked:
+            return f"{self.v:>2}(*)"
         else:
-            return f"{self._v:>2}   "
+            return f"{self.v:>2}   "
 
-    def __repl__(self):
+    def __repr__(self):
         return str(self)
 
 
@@ -37,24 +31,15 @@ class BingoBoard:
     def mark(self, num):
         for row in self._rows:
             for ix, cell in enumerate(row):
-                if cell.value() == num:
-                    cell.mark()
-                    if all([_.marked() for _ in row]):
+                if cell.v == num:
+                    cell.marked = True
+                    if all([_.marked for _ in row]):
                         self.bingo = True
-                    else:
-                        column = []
-                        for r in self._rows:
-                            column.append(r[ix])
-                        if all([_.marked() for _ in column]):
-                            self.bingo = True
+                    elif all([_.marked for _ in [_r[ix] for _r in self._rows]]):
+                        self.bingo = True
 
     def get_unmarked_sum(self):
-        sum = 0
-        for row in self._rows:
-            for cell in row:
-                if not cell.marked():
-                    sum += cell.value()
-        return sum
+        return sum(cell.v for cell in itertools.chain(*self._rows) if not cell.marked)
 
     def __str__(self):
         lines = ["BINGO" if self.bingo else ""]
