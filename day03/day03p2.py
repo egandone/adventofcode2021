@@ -1,12 +1,12 @@
-def least_common(numbers, position):
-    m = most_common(numbers, position)
-    return "1" if m == "0" else "0"
-
-
 def most_common(numbers, position):
     one_count = len([n for n in numbers if n[position] == "1"])
     zero_count = len(numbers) - one_count
     return "1" if one_count >= zero_count else "0"
+
+
+def least_common(numbers, position):
+    m = most_common(numbers, position)
+    return "1" if m == "0" else "0"
 
 
 def filter_to_one(l, function):
