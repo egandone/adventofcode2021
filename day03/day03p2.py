@@ -1,23 +1,12 @@
-from collections import Counter
-
-counters = None
-
-
 def least_common(numbers, position):
     m = most_common(numbers, position)
-    if m == "1":
-        return "0"
-    else:
-        return "1"
+    return "1" if m == "0" else "0"
 
 
 def most_common(numbers, position):
     one_count = len([n for n in numbers if n[position] == "1"])
     zero_count = len(numbers) - one_count
-    if one_count >= zero_count:
-        return "1"
-    else:
-        return "0"
+    return "1" if one_count >= zero_count else "0"
 
 
 with open("input.txt") as input:
