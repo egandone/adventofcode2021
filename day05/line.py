@@ -8,36 +8,25 @@ class Line:
             raise ValueError(
                 f'The input string "{str}" does not match the expected pattern'
             )
-        x1 = int(m.groups()[0])
-        y1 = int(m.groups()[1])
-        x2 = int(m.groups()[2])
-        y2 = int(m.groups()[3])
+        x1,y1,x2,y2 = int(m.groups()[0]),int(m.groups()[1]),int(m.groups()[2]),int(m.groups()[3])
         self.start = (x1, y1)
         self.end = (x2, y2)
         self.is_horizontal = y1 == y2
         self.is_vertical = x1 == x2
 
     def get_points(self):
-        points = []
-        if self.is_horizontal:
-            y = self.start[1]
+        x_list = y_list = None
+        if not self.is_vertical:
             dx = 1 if self.end[0] >= self.start[0] else -1
-            for x in range(self.start[0], self.end[0] + dx, dx):
-                points.append((x, y))
-        elif self.is_vertical:
-            x = self.start[0]
+            x_list = [x for x in range(self.start[0], self.end[0] + dx, dx)]
+        if not self.is_horizontal:
             dy = 1 if self.end[1] >= self.start[1] else -1
-            for y in range(self.start[1], self.end[1] + dy, dy):
-                points.append((x, y))
-        else:
-            dx = 1 if self.end[0] >= self.start[0] else -1
-            dy = 1 if self.end[1] >= self.start[1] else -1
-            (x, y) = self.start
-            points.append((x, y))
-            while (x, y) != self.end:
-                x += dx
-                y += dy
-                points.append((x, y))
+            y_list = [y for y in range(self.start[1], self.end[1] + dy, dy)]
+        if not x_list:
+            x_list = [self.start[0]] * len(y_list)
+        if not y_list:
+            y_list = [self.start[1]] * len(x_list)
+        points = zip(x_list, y_list)
         return points
 
     def __str__(self):
