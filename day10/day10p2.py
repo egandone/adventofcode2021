@@ -1,7 +1,10 @@
 from collections import deque
 
+# A map to match start and end codes for blocks
 openings = {"(": ")", "{": "}", "[": "]", "<": ">"}
+# Map to lookup the cost for each type of closing
 closing_costs = {")": 3, "]": 57, "}": 1197, ">": 25137}
+# Map to lookup the fix score for each type of closing
 fix_score = {")": 1, "]": 2, "}": 3, ">": 4}
 
 
@@ -26,7 +29,7 @@ def evaluate_line(l: str) -> int:
     return 0
 
 
-def fix_line(l: str) -> str:
+def get_line_fix(l: str) -> str:
     parse_queue = deque()
 
     # Iterate over the input, which is assumed
@@ -57,23 +60,17 @@ def fix_line(l: str) -> str:
 
 
 def compute_fix_score(l: str) -> int:
+    # scoring algorithm for a particular sequence of endings
     score = 0
     for c in l:
         score = score * 5 + fix_score[c]
     return score
 
 
-scores = []
 with open("input.txt") as input:
-    for line in input.readlines():
-        line = line.strip()
-        cost = evaluate_line(line)
-        # Only investigate lines that pass validation (i.e., cost is 0)
-        if cost == 0:
-            endings = fix_line(line)
-            score = compute_fix_score(endings)
-            # print(f"{endings} - {score}")
-            scores.append(score)
+    lines = [line.strip() for line in input.readlines()]
+lines = [line for line in lines if evaluate_line(line) == 0]
+scores = [compute_fix_score(get_line_fix(line)) for line in lines]
 scores.sort()
 middle_score = scores[int((len(scores) - 1) / 2)]
 print(f"Total of {len(scores)} fixed lines -> middle score = {middle_score}")
