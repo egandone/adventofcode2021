@@ -24,4 +24,4 @@ with open("input.txt") as input:
 for line in lines:
     binary_string = "".join([hex2bin[c] for c in line])
     packet = create_packet(binary_string)
-    print(f"{line} -> {packet.version()}")
+    print(f"{line} -> {packet.value()}")
