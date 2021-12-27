@@ -1,4 +1,5 @@
 from itertools import combinations
+import numpy as np
 
 
 class Scanner:
@@ -8,6 +9,9 @@ class Scanner:
 
     def add_point(self, pt: tuple):
         self._points.append(pt)
+        
+    def get_points(self):
+        return np.array(self._points)
 
     def __str__(self):
         return f"[{self._id}]:{len(self._points)} points"
@@ -18,11 +22,4 @@ class Scanner:
             for d in range(s + 1, len(self._points)):
                 d = tuple(_[1] - _[0] for _ in zip(self._points[s], self._points[d]))
                 differentials.add(d)
-                differentials.add((d[0], -d[1], d[2]))
-                differentials.add((d[0], -d[1], -d[2]))
-                differentials.add((d[0], d[1], -d[2]))
-                differentials.add((-d[0], d[1], d[2]))
-                differentials.add((-d[0], -d[1], d[2]))
-                differentials.add((-d[0], -d[1], -d[2]))
-                differentials.add((-d[0], d[1], -d[2]))
         return differentials
